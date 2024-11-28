@@ -1,4 +1,4 @@
-abstract type AbstractHistogramFitModel{N<:Integer,J<:Integer} end
+abstract type AbstractHistogramFitModel{N,J} end
 
 
 struct PoissonianBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}

@@ -9,3 +9,6 @@ function simpson(f, a::Number, b::Number)
         f₂ = f(b)
         return h * (f₀ + 4f₁ + f₂) / 3
 end
+
+
+simpson(f, a::AbstractVector{T}, b::AbstractVector{T}) where {T} = simpson(f, a..., b...)
