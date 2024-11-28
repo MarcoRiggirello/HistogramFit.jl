@@ -1,0 +1,4 @@
+name = "HistogramsFit"
+uuid = "764556d7-d977-4591-84fa-8a146ecfd355"
+authors = ["MarcoRiggirello <marco.riggirello@libero.it>"]
+version = "0.0.1"

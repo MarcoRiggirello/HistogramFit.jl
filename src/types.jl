@@ -1,7 +1,7 @@
 abstract type AbstractHistogramFitModel{N,J} end
 
 
-struct PoissonianBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
+@kwdef struct PoissonianBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
         edges::NTuple{N,T}
         bincounts::AbstractArray{U,N}
         curve::Function
@@ -10,7 +10,7 @@ struct PoissonianBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
 end
 
 
-struct MultinomialBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
+@kwdef struct MultinomialBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
         edges::NTuple{N,T}
         bincounts::AbstractArray{U,N}
         curve::Function

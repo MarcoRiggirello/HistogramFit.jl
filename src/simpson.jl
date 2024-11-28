@@ -12,3 +12,6 @@ end
 
 
 simpson(f, a::AbstractVector{T}, b::AbstractVector{T}) where {T} = simpson(f, a..., b...)
+
+
+simpson(f, domain) = simpson(f, domain...)
