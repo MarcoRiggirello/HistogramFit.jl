@@ -1,4 +1,5 @@
 using HistogramsFit
+using Integrals
 using Test
 
 include("simpson_test.jl")
