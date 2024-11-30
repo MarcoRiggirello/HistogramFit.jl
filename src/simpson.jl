@@ -14,4 +14,7 @@ end
 simpson(f, a::AbstractVector{T}, b::AbstractVector{T}) where {T} = simpson(f, a..., b...)
 
 
-simpson(f, domain) = simpson(f, domain...)
+simpson(f, domain::Tuple) = simpson(f, domain...)
+
+
+simpson(f, domain::Tuple, α) = simpson(x -> f(x, α), domain)

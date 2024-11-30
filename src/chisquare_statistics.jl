@@ -4,7 +4,7 @@ function predicted_events(hfm::AbstractHistogramFitModel{N,J}, α::AbstractVecto
         e = edges(hfm)
         l = [e[i][j] for (i, j) in enumerate(Tuple(bin))]
         u = [e[i][j] for (i, j) in enumerate(Tuple(bin + oneunit(bin)))]
-        return q(x -> f(x, α), l, u)
+        return q(f, (l, u), α)
 end
 
 

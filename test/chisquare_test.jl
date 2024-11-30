@@ -26,9 +26,8 @@
         #####################
         # nD histogram test #
         #####################
-        function cubature(f, l, u)
-                g(u, _) = f(u)
-                prob = IntegralProblem(g, (l, u))
+        function cubature(f, d, α)
+                prob = IntegralProblem(f, d, α)
                 sol = solve(prob, HCubatureJL(); reltol=1e-3, abstol=1e-3)
                 return sol.u
         end
