@@ -1,0 +1,3 @@
+var documenterSearchIndex = {"docs":
+[{"location":"api/#API","page":"API","title":"API","text":"","category":"section"},{"location":"api/","page":"API","title":"API","text":"Modules = [HistogramsFit]","category":"page"},{"location":"#Welcome-to-HistrogramsFit.jl's-documentation","page":"Welcome to HistrogramsFit.jl's documentation","title":"Welcome to HistrogramsFit.jl's documentation","text":"","category":"section"},{"location":"","page":"Welcome to HistrogramsFit.jl's documentation","title":"Welcome to HistrogramsFit.jl's documentation","text":"../../README.md","category":"page"},{"location":"tutorial/#Tutorial","page":"Tutorial","title":"Tutorial","text":"","category":"section"}]
+}
