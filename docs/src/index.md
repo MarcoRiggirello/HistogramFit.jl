@@ -14,9 +14,7 @@ creates a theoretically sound chi square statistics that can be used to perform
 2. Confidence interval estimation;
 3. Goodness-of-fit testing.
 
-```
 !!! warning
-        This is still a work in progress and it is in pre-alpha stage.
-        Expect issues and bug. If you want to contribute, please feel free
-        to open a issue/start a discussion on GitHub! Thank you!
-```
+    This is still a work in progress and it is in pre-alpha stage.
+    Expect issues and bug. If you want to contribute, please feel free
+    to open a issue/start a discussion on GitHub! Thank you!
