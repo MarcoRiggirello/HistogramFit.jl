@@ -32,3 +32,26 @@ end
         # Wide integrals tests
         @test HistogramsFit.quadgk((x, p) -> sin(x), (0, 8π), α_null) ≈ 0 atol = 1e-8
 end
+
+
+@testset "hcubature" begin
+        α_null = 1
+        for n in 2:8
+                # trivial tests
+                domain = ([1 for _ in 1:n], [1 for _ in 1:n])
+                @test HistogramsFit.hcubature((x, p) -> 1, domain, α_null) == 0
+                domain = ([1 for _ in 1:n], [2 for _ in 1:n])
+                @test HistogramsFit.hcubature((x, p) -> 1, domain, α_null) ≈ 1
+                # polynomial tests
+                domain = ([0 for _ in 1:n], [1 for _ in 1:n])
+                for m in 1:4
+                        @test HistogramsFit.hcubature((x, p) -> sum(x .^ p), domain, m) ≈ n / (m + 1)
+                end
+                # antisymmetrical functions tests
+                domain = ([-1 for _ in 1:n], [1 for _ in 1:n])
+                for m in 1:2:9
+                        @test HistogramsFit.hcubature((x, p) -> prod(x .^ p), domain, m) ≈ 0 atol = 1e-8
+                        @test HistogramsFit.hcubature((x, p) -> sum(sin.(x) .^ p), domain, m) ≈ 0 atol = 1e-8
+                end
+        end
+end
