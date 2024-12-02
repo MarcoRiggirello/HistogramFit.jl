@@ -1,9 +1,6 @@
 # API
 
-```@docs
-PoissonianBinsModel{N,T,U,J}
-```
-
-```@docs
-MultinomialBinsModel{N,T,U,J}
+```@autodocs
+Modules = [HistogramsFit]
+Order   = [:type, :function]
 ```
