@@ -26,11 +26,6 @@
         #####################
         # nD histogram test #
         #####################
-        function cubature(f, d, α)
-                prob = IntegralProblem(f, d, α)
-                sol = solve(prob, HCubatureJL(); reltol=1e-3, abstol=1e-3)
-                return sol.u
-        end
         for n in 2:5
                 e = Tuple(1:11 for i in 1:n)
                 b = ones((10 for i in 1:n)...)
@@ -39,14 +34,14 @@
                         bincounts=b,
                         curve=f,
                         params_names=(:const,),
-                        integrator=cubature
+                        integrator=HistogramsFit.hcubature
                 )
                 hm = MultinomialBinsModel(
                         edges=e,
                         bincounts=b,
                         curve=f,
                         params_names=(:const,),
-                        integrator=cubature
+                        integrator=HistogramsFit.hcubature
                 )
                 # Poisson test
                 @test chisquare(hp, [1]) ≈ 0 atol = 1e-8
