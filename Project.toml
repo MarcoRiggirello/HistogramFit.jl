@@ -2,3 +2,13 @@ name = "HistogramsFit"
 uuid = "764556d7-d977-4591-84fa-8a146ecfd355"
 authors = ["MarcoRiggirello <marco.riggirello@libero.it>"]
 version = "0.0.1"
+
+[deps]
+FHist = "68837c9b-b678-4cd5-9925-8a54edc8f695"
+Integrals = "de52edbc-65ea-441a-8357-d3a637375a31"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+[compat]
+FHist = "0.11.7"
+Integrals = "4.5.0"
+StatsBase = "0.34.3"
