@@ -43,22 +43,22 @@ end
 
 for M in [:PoissonianBinsModel, :MultinomialBinsModel]
         @eval begin
-                function $M(h::Histogram, f, params_names; integrator)
+                function $M(h::Histogram, f, params_names; integrator=:default)
                         e = h.edges
                         n = h.weights
                         i = integrator
-                        if isnothing(i)
+                        if i == :default
                                 i = length(e) > 1 ? hcubature : quadgk
                         end
                         return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
                 end
         end
         @eval begin
-                function $M(h::Hist1D, f, params_names; integrator)
+                function $M(h::Hist1D, f, params_names; integrator=:default)
                         e = ([binedges(h)...],)
-                        n = bincounts(h)
+                        n = FHist.bincounts(h)
                         i = integrator
-                        if isnothing(i)
+                        if i == :default
                                 i = quadgk
                         end
                         return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
@@ -66,11 +66,11 @@ for M in [:PoissonianBinsModel, :MultinomialBinsModel]
         end
         for H in [:Hist2D, :Hist3D]
                 @eval begin
-                        function $M(h::$H, f, params_names)
+                        function $M(h::$H, f, params_names; integrator=:default)
                                 e = Tuple(binedges(h))
-                                n = bincounts(h)
+                                n = FHist.bincounts(h)
                                 i = integrator
-                                if isnothing(i)
+                                if i == :default
                                         i = hcubature
                                 end
                                 return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
