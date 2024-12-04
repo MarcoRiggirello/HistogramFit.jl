@@ -1,5 +1,6 @@
-@testset "chisquare" begin
-        f(_, a) = a[1]
+@testset "chisquare_statistics" begin
+        g(_, a) = a[1]
+        f = IntegralFunction(g)
         #####################
         # 1D histogram test #
         #####################
@@ -8,21 +9,21 @@
                 bincounts=ones(10),
                 curve=f,
                 params_names=(:const,),
-                integrator=simpson
+                integrator=QuadGKJL()
         )
         hm = MultinomialBinsModel(
                 edges=(1:11,),
                 bincounts=ones(10),
                 curve=f,
                 params_names=(:const,),
-                integrator=simpson
+                integrator=QuadGKJL()
         )
         # Poisson test
-        @test chisquare(hp, [1]) == 0
-        @test chisquare(hp, [2]) ≈ 2 * 10 * (1 - log(2))
+        @test chisquare_statistics(hp, [1]) == 0
+        @test chisquare_statistics(hp, [2]) ≈ 2 * 10 * (1 - log(2))
         # Multinomial test
-        @test chisquare(hm, [1]) == 0
-        @test chisquare(hm, [2]) ≈ -20log(2)
+        @test chisquare_statistics(hm, [1]) == 0
+        @test chisquare_statistics(hm, [2]) ≈ -20log(2)
         #####################
         # nD histogram test #
         #####################
@@ -34,20 +35,20 @@
                         bincounts=b,
                         curve=f,
                         params_names=(:const,),
-                        integrator=HistogramsFit.hcubature
+                        integrator=HCubatureJL()
                 )
                 hm = MultinomialBinsModel(
                         edges=e,
                         bincounts=b,
                         curve=f,
                         params_names=(:const,),
-                        integrator=HistogramsFit.hcubature
+                        integrator=HCubatureJL()
                 )
                 # Poisson test
-                @test chisquare(hp, [1]) ≈ 0 atol = 1e-8
-                @test chisquare(hp, [2]) ≈ 2 * 10^n * (1 - log(2))
+                @test chisquare_statistics(hp, [1]) ≈ 0 atol = 1e-8
+                @test chisquare_statistics(hp, [2]) ≈ 2 * 10^n * (1 - log(2))
                 # Multinomial test
-                @test chisquare(hm, [1]) ≈ 0 atol = 1e-8
-                @test chisquare(hm, [2]) ≈ -2 * 10^n * log(2)
+                @test chisquare_statistics(hm, [1]) ≈ 0 atol = 1e-8
+                @test chisquare_statistics(hm, [2]) ≈ -2 * 10^n * log(2)
         end
 end

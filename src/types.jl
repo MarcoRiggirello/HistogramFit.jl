@@ -1,5 +1,6 @@
 abstract type AbstractHistogramFitModel{N,J} end
 
+
 """
 	PoissonianBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
 
@@ -15,9 +16,9 @@ distribution.
 @kwdef struct PoissonianBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
         edges::NTuple{N,T}
         bincounts::AbstractArray{U,N}
-        curve::Function
+        curve::SciMLBase.AbstractIntegralFunction
         params_names::NTuple{J,Symbol}
-        integrator::Function
+        integrator::SciMLBase.AbstractIntegralAlgorithm
 end
 
 
@@ -35,43 +36,45 @@ This struct stores all the informations needed to construct a
 @kwdef struct MultinomialBinsModel{N,T,U,J} <: AbstractHistogramFitModel{N,J}
         edges::NTuple{N,T}
         bincounts::AbstractArray{U,N}
-        curve::Function
+        curve::SciMLBase.AbstractIntegralFunction
         params_names::NTuple{J,Symbol}
-        integrator::Function
+        integrator::SciMLBase.AbstractIntegralAlgorithm
 end
 
 
 for M in [:PoissonianBinsModel, :MultinomialBinsModel]
         @eval begin
-                function $M(h::Histogram, f, params_names; integrator=:default)
+                function $M(h::Histogram, fun, params_names; integrator=:default)
                         e = h.edges
                         n = h.weights
+                        f = typeof(fun) <: SciMLBase.AbstractIntegralFunction ? fun : IntegralFunction(fun)
                         i = integrator
                         if i == :default
-                                i = length(e) > 1 ? hcubature : quadgk
+                                i = length(e) > 1 ? HCubatureJL() : QuadGKJL()
                         end
                         return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
                 end
         end
-        @eval begin
-                function $M(h::Hist1D, f, params_names; integrator=:default)
-                        e = ([binedges(h)...],)
-                        n = FHist.bincounts(h)
-                        i = integrator
-                        if i == :default
-                                i = quadgk
-                        end
-                        return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
-                end
-        end
-        for H in [:Hist2D, :Hist3D]
+        #        @eval begin
+        #                function $M(h::Hist1D, f, params_names; integrator=:default)
+        #                        e = ([binedges(h)...],)
+        #                        n = FHist.bincounts(h)
+        #                        i = integrator
+        #                        if i == :default
+        #                                i = QuadGKJL()
+        #                        end
+        #                        return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
+        #                end
+        #        end
+        for H in [:Hist1D, :Hist2D, :Hist3D]
                 @eval begin
-                        function $M(h::$H, f, params_names; integrator=:default)
+                        function $M(h::$H, fun, params_names; integrator=:default)
                                 e = Tuple(binedges(h))
                                 n = FHist.bincounts(h)
+                                f = typeof(fun) <: SciMLBase.AbstractIntegralFunction ? fun : IntegralFunction(fun)
                                 i = integrator
                                 if i == :default
-                                        i = hcubature
+                                        i = $H != Hist1D ? HCubatureJL() : QuadGKJL()
                                 end
                                 return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
                         end

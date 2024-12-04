@@ -27,9 +27,8 @@ to be of the form `f(data, parameters)` in order to work with `HistogramsFit`
 =#
 function gaus(x, p)
     N, μ, σ = p
-    return N / √(2π * σ^2) * exp(-(x - μ)^2 / (2 * σ^2))
+    return N / √(2π * σ^2) * exp(-(x[1] - μ)^2 / (2 * σ^2))
 end
-gausvec(x, p) = gaus(x[1], p)
 #=======================
 ## Fitting the histogram
 
@@ -37,17 +36,17 @@ Now we want to find the values of the parameters of our model that best fit
 our data. The number of events is not fixed by our "experiment" hence we should
 use a independent Poissonian statistics for the bin population:
 =#
-pbm = PoissonianBinsModel(h, gausvec, (:N, :μ, :σ))
+pbm = PoissonianBinsModel(h, gaus, (:N, :μ, :σ))
 #=
 !!! todo
     improve model display
 =#
 #=
-Now we can use the `chisquare` method to generate the function to be minimized
+Now we can use the `chisquare_statistics` method to generate the function to be minimized
 =#
 # The p parameter is requested by Optimization
 # but it is not used by us
-f(α, p) = chisquare(pbm, α)
+f(α, p) = chisquare_statistics(pbm, α)
 initial_params = [100.0, 1.0, 10.0] # far from the answer on purpose
 #=
 And we are ready to use Optimization! We can mix and match the optimization
@@ -71,7 +70,7 @@ dof = length(HistogramsFit.bincounts(pbm)) - length(sol.u)
 #=
 while the χ² statistics in the optimal parameters is
 =#
-χ² = chisquare(pbm, sol.u)
+χ² = chisquare_statistics(pbm, sol.u)
 #=
 perhaps, the χ² is in the range
 =#
@@ -81,7 +80,7 @@ as expected for a good fit.
 
 We can use AD to compute the covariance matrix as well
 =#
-covm = inv(hessian(x -> chisquare(pbm, x), AutoForwardDiff(), sol.u))
+covm = inv(hessian(x -> chisquare_statistics(pbm, x), AutoForwardDiff(), sol.u))
 #=
 Hence we have
 =#

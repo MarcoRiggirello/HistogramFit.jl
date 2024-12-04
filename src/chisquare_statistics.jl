@@ -1,10 +1,11 @@
 function predicted_events(hfm::AbstractHistogramFitModel{N,J}, α::AbstractVector, bin::CartesianIndex{N}) where {N,J}
-        f = curve(hfm)
-        q = integrator(hfm)
         e = edges(hfm)
         l = [e[i][j] for (i, j) in enumerate(Tuple(bin))]
         u = [e[i][j] for (i, j) in enumerate(Tuple(bin + oneunit(bin)))]
-        return q(f, (l, u), α)
+        f = curve(hfm)
+        q = integrator(hfm)
+        p = IntegralProblem(f, (l, u), α)
+        return solve(p, q).u
 end
 
 
@@ -22,13 +23,10 @@ function bin_lnλ(hfm::MultinomialBinsModel{N,T,U,J}, α, bin::CartesianIndex{N}
 end
 
 
-function chisquare(hfm::AbstractHistogramFitModel, α)
+function chisquare_statistics(hfm::AbstractHistogramFitModel, α)
         lnλ = 0
         for b in CartesianIndices(bincounts(hfm))
                 lnλ += bin_lnλ(hfm, α, b)
         end
         return 2lnλ
 end
-
-
-χ²(hfm, α) = chisquare(hfm, α)
