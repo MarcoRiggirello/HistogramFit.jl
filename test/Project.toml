@@ -1,3 +1,8 @@
 [deps]
 Integrals = "de52edbc-65ea-441a-8357-d3a637375a31"
+SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+Integrals = "4.5.0"
+SciMLBase = "2.65.1"
