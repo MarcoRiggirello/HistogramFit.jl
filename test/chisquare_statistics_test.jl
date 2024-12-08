@@ -19,11 +19,11 @@
                 integrator=QuadGKJL()
         )
         # Poisson test
-        @test chisquare_statistics(hp, [1]) == 0
-        @test chisquare_statistics(hp, [2]) ≈ 2 * 10 * (1 - log(2))
+        @test chisquare_statistics([1], hp) == 0
+        @test chisquare_statistics([2], hp) ≈ 2 * 10 * (1 - log(2))
         # Multinomial test
-        @test chisquare_statistics(hm, [1]) == 0
-        @test chisquare_statistics(hm, [2]) ≈ -20log(2)
+        @test chisquare_statistics([1], hm) == 0
+        @test chisquare_statistics([2], hm) ≈ -20log(2)
         #####################
         # nD histogram test #
         #####################
@@ -45,10 +45,10 @@
                         integrator=HCubatureJL()
                 )
                 # Poisson test
-                @test chisquare_statistics(hp, [1]) ≈ 0 atol = 1e-8
-                @test chisquare_statistics(hp, [2]) ≈ 2 * 10^n * (1 - log(2))
+                @test chisquare_statistics([1], hp) ≈ 0 atol = 1e-8
+                @test chisquare_statistics([2], hp) ≈ 2 * 10^n * (1 - log(2))
                 # Multinomial test
-                @test chisquare_statistics(hm, [1]) ≈ 0 atol = 1e-8
-                @test chisquare_statistics(hm, [2]) ≈ -2 * 10^n * log(2)
+                @test chisquare_statistics([1], hm) ≈ 0 atol = 1e-8
+                @test chisquare_statistics([2], hm) ≈ -2 * 10^n * log(2)
         end
 end

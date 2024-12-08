@@ -46,15 +46,14 @@ Now we can use the `chisquare_statistics` method to generate the function to be 
 =#
 # The p parameter is requested by Optimization
 # but it is not used by us
-f(α, p) = chisquare_statistics(pbm, α)
 initial_params = [100.0, 1.0, 10.0] # far from the answer on purpose
 #=
 And we are ready to use Optimization! We can mix and match the optimization
 algorithm and the automatic differentiation (AD) method we like. Let's use the
 robust `BFGS()` and `ForwardDiff()`
 =#
-optf = OptimizationFunction(f, Optimization.AutoForwardDiff())
-prob = OptimizationProblem(optf, initial_params, 1.0)
+optf = OptimizationFunction(chisquare_statistics, Optimization.AutoForwardDiff())
+prob = OptimizationProblem(optf, initial_params, pbm)
 sol = solve(prob, Optim.BFGS())
 #=
 !!! todo
@@ -70,7 +69,7 @@ dof = length(HistogramsFit.bincounts(pbm)) - length(sol.u)
 #=
 while the χ² statistics in the optimal parameters is
 =#
-χ² = chisquare_statistics(pbm, sol.u)
+χ² = chisquare_statistics(sol.u, pbm)
 #=
 perhaps, the χ² is in the range
 =#
@@ -80,7 +79,7 @@ as expected for a good fit.
 
 We can use AD to compute the covariance matrix as well
 =#
-covm = inv(hessian(x -> chisquare_statistics(pbm, x), AutoForwardDiff(), sol.u))
+covm = inv(hessian(x -> chisquare_statistics(x, pbm), AutoForwardDiff(), sol.u))
 #=
 Hence we have
 =#

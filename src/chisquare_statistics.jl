@@ -1,4 +1,4 @@
-function predicted_events(hfm::AbstractHistogramFitModel{N,J}, α::AbstractVector, bin::CartesianIndex{N}) where {N,J}
+function predicted_events(α::AbstractVector, hfm::AbstractHistogramFitModel{N,J}, bin::CartesianIndex{N}) where {N,J}
         e = edges(hfm)
         l = [e[i][j] for (i, j) in enumerate(Tuple(bin))]
         u = [e[i][j] for (i, j) in enumerate(Tuple(bin + oneunit(bin)))]
@@ -9,24 +9,24 @@ function predicted_events(hfm::AbstractHistogramFitModel{N,J}, α::AbstractVecto
 end
 
 
-function bin_lnλ(hfm::PoissonianBinsModel{N,T,U,J}, α, bin::CartesianIndex{N}) where {N,T,U,J}
+function bin_lnλ(α, hfm::PoissonianBinsModel{N,T,U,J}, bin::CartesianIndex{N}) where {N,T,U,J}
         n = bincounts(hfm)[bin]
-        y = predicted_events(hfm, α, bin)
+        y = predicted_events(α, hfm, bin)
         return y - n + n * log(n / y)
 end
 
 
-function bin_lnλ(hfm::MultinomialBinsModel{N,T,U,J}, α, bin::CartesianIndex{N}) where {N,T,U,J}
+function bin_lnλ(α, hfm::MultinomialBinsModel{N,T,U,J}, bin::CartesianIndex{N}) where {N,T,U,J}
         n = bincounts(hfm)[bin]
-        y = predicted_events(hfm, α, bin)
+        y = predicted_events(α, hfm, bin)
         return n * log(n / y)
 end
 
 
-function chisquare_statistics(hfm::AbstractHistogramFitModel, α)
+function chisquare_statistics(α, hfm::AbstractHistogramFitModel)
         lnλ = 0
         for b in CartesianIndices(bincounts(hfm))
-                lnλ += bin_lnλ(hfm, α, b)
+                lnλ += bin_lnλ(α, hfm, b)
         end
         return 2lnλ
 end
