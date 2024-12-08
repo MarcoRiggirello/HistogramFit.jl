@@ -2,6 +2,7 @@ module HistogramsFit
 
 using StatsBase, FHist
 using SciMLBase, Integrals
+using FLoops
 
 #include("integrators.jl")
 include("types.jl")
