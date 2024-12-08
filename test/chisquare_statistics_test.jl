@@ -9,14 +9,14 @@
                 bincounts=ones(10),
                 curve=f,
                 params_names=(:const,),
-                integrator=HCubatureJL()#QuadGKJL()
+                integrator=QuadGKJL()
         )
         hm = MultinomialBinsModel(
                 edges=(1:11,),
                 bincounts=ones(10),
                 curve=f,
                 params_names=(:const,),
-                integrator=HCubatureJL()#QuadGKJL()
+                integrator=QuadGKJL()
         )
         # Poisson test
         @test chisquare_statistics(hp, [1]) == 0
