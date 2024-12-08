@@ -5,4 +5,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 Integrals = "4.5.0"
-SciMLBase = "<2.66.0"
+SciMLBase = "2.59.1"
