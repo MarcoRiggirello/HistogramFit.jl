@@ -69,7 +69,7 @@ for M in [:PoissonianBinsModel, :MultinomialBinsModel]
         for H in [:Hist1D, :Hist2D, :Hist3D]
                 @eval begin
                         function $M(h::$H, fun, params_names; integrator=:default)
-                                e = $H != Hist1D ? Tuple(binedges(h)) : Tuple([binedges(h)...],)
+                                e = $H != Hist1D ? Tuple(binedges(h)) : ([binedges(h)...],)
                                 n = FHist.bincounts(h)
                                 f = typeof(fun) <: SciMLBase.AbstractIntegralFunction ? fun : IntegralFunction(fun)
                                 i = integrator
