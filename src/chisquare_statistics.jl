@@ -12,14 +12,14 @@ end
 function bin_lnλ(α, hfm::PoissonianBinsModel{N,T,U,J}, bin::CartesianIndex{N}) where {N,T,U,J}
         n = bincounts(hfm)[bin]
         y = predicted_events(α, hfm, bin)
-        return y - n + n * log(n / y)
+        return n == 0 ? y : y - n + n * log(n / y)
 end
 
 
 function bin_lnλ(α, hfm::MultinomialBinsModel{N,T,U,J}, bin::CartesianIndex{N}) where {N,T,U,J}
         n = bincounts(hfm)[bin]
         y = predicted_events(α, hfm, bin)
-        return n * log(n / y)
+        return n == 0 ? 0 : n * log(n / y)
 end
 
 
