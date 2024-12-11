@@ -50,22 +50,11 @@ for M in [:PoissonianBinsModel, :MultinomialBinsModel]
                         f = typeof(fun) <: SciMLBase.AbstractIntegralFunction ? fun : IntegralFunction(fun)
                         i = integrator
                         if i == :default
-                                i = length(e) > 1 ? HCubatureJL() : QuadGKJL()
+                                i = HCubatureJL()
                         end
                         return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
                 end
         end
-        #        @eval begin
-        #                function $M(h::Hist1D, f, params_names; integrator=:default)
-        #                        e = ([binedges(h)...],)
-        #                        n = FHist.bincounts(h)
-        #                        i = integrator
-        #                        if i == :default
-        #                                i = QuadGKJL()
-        #                        end
-        #                        return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
-        #                end
-        #        end
         for H in [:Hist1D, :Hist2D, :Hist3D]
                 @eval begin
                         function $M(h::$H, fun, params_names; integrator=:default)
@@ -74,7 +63,7 @@ for M in [:PoissonianBinsModel, :MultinomialBinsModel]
                                 f = typeof(fun) <: SciMLBase.AbstractIntegralFunction ? fun : IntegralFunction(fun)
                                 i = integrator
                                 if i == :default
-                                        i = $H != Hist1D ? HCubatureJL() : QuadGKJL()
+                                        i = HCubatureJL()
                                 end
                                 return $M(edges=e, bincounts=n, curve=f, params_names=params_names, integrator=i)
                         end
