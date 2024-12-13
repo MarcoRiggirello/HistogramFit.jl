@@ -23,8 +23,8 @@ function bin_lnλ(α, hfm::MultinomialBinsModel{N,T,U,J}, bin::CartesianIndex{N}
 end
 
 
-function chisquare_statistics(α, hfm::AbstractHistogramFitModel)
-        lnλ = 0
+function chisquare_statistics(α, hfm::AbstractHistogramFitModel{N, J}) where {N,J}
+        lnλ = zero(typeof(bin_lnλ(α, hfm, CartesianIndex{N}())))
         for b in CartesianIndices(bincounts(hfm))
                 lnλ += bin_lnλ(α, hfm, b)
         end
